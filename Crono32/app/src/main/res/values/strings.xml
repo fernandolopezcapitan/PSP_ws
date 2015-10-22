@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Crono32</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="empezar">go</string>
+    <string name="Frecuencia">Frecuencia</string>
+    <string name="milisegundos" />
+    <string name="pausa">Pausar/Reanudar</string>
+</resources>

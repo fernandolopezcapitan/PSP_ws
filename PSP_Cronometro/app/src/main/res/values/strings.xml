@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">PSP_Cronometro</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="btn_empezar">Go</string>
+</resources>
