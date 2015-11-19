@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         fotos.add(R.drawable.salvadorubeda);
         fotos.add(R.drawable.torreoro);
 
-        stacks = (int) (Math.random()*9);
+        stacks = (int) (Math.random()*fotos.size());
         Picasso.with(MainActivity.this)
                 .load(fotos.get(stacks))
                 .resize(350,350)
