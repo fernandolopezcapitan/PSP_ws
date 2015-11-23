@@ -29,12 +29,13 @@ public class MainActivity extends AppCompatActivity {
         cargar = (Button) findViewById(R.id.btn_cargarWeb);
         visorWeb = (WebView) findViewById(R.id.webViewVista);
 
-        //final String url = text.getText().toString();
-        final String url ="http://www.google.com";
+
+        //final String url ="http://www.google.com";
 
         cargar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String url = text.getText().toString();
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
                             @Override
@@ -50,7 +51,8 @@ public class MainActivity extends AppCompatActivity {
                                         return false;
                                     }
                                 });
-                                visorWeb.loadDataWithBaseURL(null, url, "text/html", "utf-8", null);
+
+                                visorWeb.loadDataWithBaseURL(null, response, "text/html", "utf-8", null);
 
                             }
                         }, new Response.ErrorListener() {
