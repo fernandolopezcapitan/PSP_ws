@@ -19,6 +19,13 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
+
+/**
+ * Ejemplo concreto de implementación de una Custom Request, en particular,
+ * la petición que procesa usando GSON y que google propone directamente en su documentación.
+ * Además, se complementa con una extensión de esta clase que muestra, siempre que se use
+ * dicha petición, un diálogo de progreso automáticamente.
+ */
 public class MainActivity extends AppCompatActivity {
 
 
