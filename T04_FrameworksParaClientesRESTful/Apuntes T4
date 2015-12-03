@@ -1,0 +1,56 @@
+T4 PSP. Frameworks para clientes RESTful
+
+****http://www.dosideas.com/noticias/java/314-introduccion-a-los-servicios-web-restful.html
+
+Los 4 principios de REST:
+
+C --> post ó put 
+R --> get
+U --> post ó put
+D --> delete
+
+Se usa POST para crear un recurso en el servidor
+Se usa GET para obtener un recurso
+Se usa PUT para cambiar el estado de un recurso o  actualizarlo
+Se usa DELETE para eliminar un recurso
+
+--------------
+****http://spring.io/projects
+
+http://projects.spring.io/spring-android/
+
+La parte de Usage:
+// The connection URL 
+String url = "https://ajax.googleapis.com/ajax/" + 
+    "services/search/web?v=1.0&q={query}";
+
+// Create a new RestTemplate instance
+RestTemplate restTemplate = new RestTemplate();
+
+// Add the String message converter
+restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+
+// Make the HTTP GET request, marshaling the response to a String
+//String.class es resultado, y "Android" los parámetros q hay q pasarle
+
+O tab se le puede pasar el JSon, como alternativa
+
+String result = restTemplate.getForObject(url, String.class, "Android");
+
+------------------------ 
+PASOS:
+-----
+1. Poner en dependencias gradle:
+
+    compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
+
+2. Permisos de internet
+
+3. Crear Asyntast y meter "La parte de usage", retornar result
+
+4. en gradle poner "    packagingOptions {
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+    }"
+
+

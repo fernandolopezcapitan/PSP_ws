@@ -29,7 +29,8 @@ public class ProgressDialogGsonRequest<T> extends GsonRequest {
     ProgressDialog progDailog;
 
 
-    public ProgressDialogGsonRequest(String url, Class clazz, Map headers, Response.Listener listener, Response.ErrorListener errorListener, Context _mContext) {
+    public ProgressDialogGsonRequest(String url, Class clazz, Map headers, Response.Listener listener,
+                                     Response.ErrorListener errorListener, Context _mContext) {
         super(url, clazz, headers, listener, errorListener);
         mContext = _mContext;
 
