@@ -5,9 +5,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +32,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //es una conexión de red por lo que lo ejecutamos en un hilo secundario
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+
+                    // Inicializamos el socket, conectandonos a la IP del servidor y del puerto adecuado
+                    Socket s = new Socket("172.27.0.41",10000);
+                    //Socket s = new Socket("172.27.60.8",10000);
+
+                    // Construimos el flujo más adecuado sobre el flujo de salida del socket
+                    PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
+
+                    // enviamos la info
+                    printWriter.println("Hola");
+                    printWriter.println("Estamos conectados, soy Fernando");
+
+                    // enviamos el mensaje FIN de comunicación ( en este caso "FIN")
+                    printWriter.println("FIN");
+
+                    // forzamos el envío
+                    printWriter.flush();
+
+                    // cerramos el socket y con ello lo socket definidos con él
+                    s.close();
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
     }
 
