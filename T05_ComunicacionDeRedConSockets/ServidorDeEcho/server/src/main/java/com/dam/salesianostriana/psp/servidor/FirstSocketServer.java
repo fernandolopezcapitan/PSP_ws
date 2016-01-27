@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 public class FirstSocketServer {
 
 
-    public static void main(String[] args) {
+    public static void main (String[] arg){
 
         //Creamos el servidor
         ServerSocket serverSocket = null;
@@ -27,6 +27,7 @@ public class FirstSocketServer {
             // Ejecución con multiprocesamiento
             /********************************************/
 
+            // Pull de 10 hilos
             ExecutorService executorService = Executors.newFixedThreadPool(10);
 
 
@@ -38,7 +39,6 @@ public class FirstSocketServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
 

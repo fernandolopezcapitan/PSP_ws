@@ -1,30 +1,20 @@
 package com.dam.salesianostriana.psp.servidor;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 public class MainActivity extends AppCompatActivity {
-
-    TextView escribe;
-    Button btn_enviar;
-    ListView lista;
-    Socket s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,30 +23,40 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        escribe = (TextView) findViewById(R.id.editText);
-        btn_enviar = (Button) findViewById(R.id.btn_enviar);
-        lista = (ListView) findViewById(R.id.listView);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
+        //es una conexión de red por lo que lo ejecutamos en un hilo secundario
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
 
                     // Inicializamos el socket, conectandonos a la IP del servidor y del puerto adecuado
-                    //Socket s = new Socket("172.27.0.41",10000); IP de Luismi
-                    s = new Socket("172.27.60.8", 10000);
+                    Socket s = new Socket("172.27.0.41",10000);
+                    //Socket s = new Socket("172.27.60.8",10000);
 
                     // Construimos el flujo más adecuado sobre el flujo de salida del socket
                     PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
 
                     // enviamos la info
-                    printWriter.println(escribe.getText().toString());
+                    printWriter.println("Hola");
+                    printWriter.println("Estamos conectados, soy Fernando");
 
                     // enviamos el mensaje FIN de comunicación ( en este caso "FIN")
                     printWriter.println("FIN");
 
                     // forzamos el envío
                     printWriter.flush();
+
+                    // cerramos el socket y con ello lo socket definidos con él
+                    s.close();
 
 
                 } catch (IOException e) {
@@ -65,64 +65,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
 
-        btn_enviar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // AsyncTask
-            }
-        });
-
-        class recibirMsg extends AsyncTask<String, Void, String> {
-            @Override
-            protected String doInBackground(String... params) {
-                BufferedReader bufferedReader = null;
-                String mensaje = null;
-
-                try {
-                    bufferedReader =
-                            new BufferedReader(
-                                    new InputStreamReader(
-                                            s.getInputStream()));
-
-                    while (!((mensaje = bufferedReader.readLine())
-                            .equalsIgnoreCase("FIN"))) {
-
-                        System.out.println(">> " + mensaje);
-
-                        Log.d("Mensaje", mensaje);
-                    }
-
-                    s.close();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                return mensaje;
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-
-
-
-            }
-        }
-        // cerramos el socket y con ello los socket definidos con él
-
     }
-        @Override
-        protected void onDestroy () {
-            super.onDestroy();
-            try {
-                s.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

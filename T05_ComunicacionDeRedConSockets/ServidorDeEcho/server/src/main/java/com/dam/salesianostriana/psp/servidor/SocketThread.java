@@ -3,8 +3,6 @@ package com.dam.salesianostriana.psp.servidor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
@@ -41,24 +39,9 @@ public class SocketThread implements Runnable {
                     .equalsIgnoreCase("FIN"))) {
 
                 System.out.println(">> " + mensaje);
-                // ECHO //
-                // Enviar el mensaje recogido
-                PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
 
-                // enviamos la info
-                printWriter.println(mensaje);
 
-                // enviamos el mensaje FIN de comunicación ( en este caso "FIN")
-                printWriter.println("FIN");
-
-                // forzamos el envío
-                printWriter.flush();
-
-                // cerramos el socket y con ello lo socket definidos con él
-
-                // ECHO //
             }
-
 
             //Finalizamos la conexión
             s.close();
