@@ -22,13 +22,11 @@ public class FirstSocketServer {
             System.out.println("Servidor inicializado " +
                     serverSocket.toString());
 
-
             /********************************************/
             // Ejecución con multiprocesamiento
             /********************************************/
 
             ExecutorService executorService = Executors.newFixedThreadPool(10);
-
 
             while(true) {
                 //Aceptamos la conexión de un cliente
@@ -38,9 +36,6 @@ public class FirstSocketServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-
 
     }
 }

@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     Button btn_enviar;
     ListView lista;
     Socket s;
+    ArrayList<String> listaMensajes ;
+    String mensaje = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         btn_enviar = (Button) findViewById(R.id.btn_enviar);
         lista = (ListView) findViewById(R.id.listView);
 
+        listaMensajes = new ArrayList<>();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -45,20 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     // Inicializamos el socket, conectandonos a la IP del servidor y del puerto adecuado
                     //Socket s = new Socket("172.27.0.41",10000); IP de Luismi
                     s = new Socket("172.27.60.8", 10000);
-
-                    // Construimos el flujo más adecuado sobre el flujo de salida del socket
-                    PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
-
-                    // enviamos la info
-                    printWriter.println(escribe.getText().toString());
-
-                    // enviamos el mensaje FIN de comunicación ( en este caso "FIN")
-                    printWriter.println("FIN");
-
-                    // forzamos el envío
-                    printWriter.flush();
-
-
+  
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -68,52 +62,78 @@ public class MainActivity extends AppCompatActivity {
         btn_enviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // AsyncTask
+                new recibirMsg().execute(escribe.getText().toString());
             }
         });
 
-        class recibirMsg extends AsyncTask<String, Void, String> {
-            @Override
-            protected String doInBackground(String... params) {
-                BufferedReader bufferedReader = null;
-                String mensaje = null;
 
-                try {
-                    bufferedReader =
-                            new BufferedReader(
-                                    new InputStreamReader(
-                                            s.getInputStream()));
-
-                    while (!((mensaje = bufferedReader.readLine())
-                            .equalsIgnoreCase("FIN"))) {
-
-                        System.out.println(">> " + mensaje);
-
-                        Log.d("Mensaje", mensaje);
-                    }
-
-                    s.close();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                return mensaje;
-            }
-
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-
-
-
-            }
-        }
         // cerramos el socket y con ello los socket definidos con él
 
     }
+
+    private class recibirMsg extends AsyncTask<String, Void, String> {
         @Override
+        protected String doInBackground(String... params) {
+            BufferedReader bufferedReader = null;
+            PrintWriter printWriter = null;
+
+            String mensaje = "";
+            try {
+                bufferedReader =
+                        new BufferedReader(
+                                new InputStreamReader(
+                                        s.getInputStream()));
+                printWriter =
+                        new PrintWriter(
+                                new OutputStreamWriter(
+                                        s.getOutputStream()));
+
+                printWriter.println(params[0]);
+                printWriter.flush();
+
+                mensaje = bufferedReader.readLine();
+                if(mensaje!=null){
+                    Log.i("RECIBIDO",mensaje);
+                }
+
+                if(params[0].equals("FIN")){
+                    //Toast.makeText(MainActivity.this, "Se ha finalizado la conexión", Toast.LENGTH_SHORT).show();
+
+                    s.close();
+                }
+                    /*while (!((mensaje = bufferedReader.readLine())
+                            .equalsIgnoreCase("FIN"))) {
+                        System.out.println(">> " + mensaje);
+                        Log.d("Mensaje", mensaje);
+                    }
+                    s.close();*/
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            return mensaje;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            if(s != null){
+                listaMensajes.add(s);
+                ArrayAdapter adapter = new ArrayAdapter<>(MainActivity.this,android.R.layout.simple_list_item_1,listaMensajes);
+                lista.setAdapter(adapter);
+
+            } else {
+                Toast.makeText(MainActivity.this, "Se ha finalizado la conexión", Toast.LENGTH_SHORT).show();
+                btn_enviar.setEnabled(false);
+            }
+
+
+        }
+    }
+        /*@Override
         protected void onDestroy () {
             super.onDestroy();
             try {
@@ -121,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
 
     @Override

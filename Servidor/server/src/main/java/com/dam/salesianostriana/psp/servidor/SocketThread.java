@@ -31,6 +31,8 @@ public class SocketThread implements Runnable {
                             new InputStreamReader(
                                     s.getInputStream()));
 
+            PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(s.getOutputStream()),true);
+
             //El mensaje FIN será el que finalice la
             //comunicación entre cliente y servidor.
             //Mientras tanto, vamos leyendo los mensajes
@@ -41,24 +43,15 @@ public class SocketThread implements Runnable {
                     .equalsIgnoreCase("FIN"))) {
 
                 System.out.println(">> " + mensaje);
-                // ECHO //
                 // Enviar el mensaje recogido
-                PrintWriter printWriter = new PrintWriter(new OutputStreamWriter(s.getOutputStream()));
 
                 // enviamos la info
                 printWriter.println(mensaje);
-
-                // enviamos el mensaje FIN de comunicación ( en este caso "FIN")
-                printWriter.println("FIN");
-
                 // forzamos el envío
                 printWriter.flush();
 
                 // cerramos el socket y con ello lo socket definidos con él
-
-                // ECHO //
             }
-
 
             //Finalizamos la conexión
             s.close();
