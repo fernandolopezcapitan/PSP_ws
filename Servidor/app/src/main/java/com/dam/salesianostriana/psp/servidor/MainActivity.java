@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 listaMensajes.add(s);
                 ArrayAdapter adapter = new ArrayAdapter<>(MainActivity.this,android.R.layout.simple_list_item_1,listaMensajes);
                 lista.setAdapter(adapter);
+                //adapter.notifyDataSetChanged();
 
             } else {
                 Toast.makeText(MainActivity.this, "Se ha finalizado la conexión", Toast.LENGTH_SHORT).show();
