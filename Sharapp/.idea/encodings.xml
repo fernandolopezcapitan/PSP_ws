@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/sharap_server/src/main/java/com/dam/salesianostriana/psp/sharapp/SharappMessage.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/sharap_server/src/main/java/com/dam/salesianostriana/psp/sharapp/server/Connect.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/sharap_server/src/main/java/com/dam/salesianostriana/psp/sharapp/server/FileServer.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/sharap_server/src/main/java/com/dam/salesianostriana/psp/sharapp/server/Recieve.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/sharap_server/src/main/java/com/dam/salesianostriana/psp/sharapp/server/Send.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/sharap_server/src/main/java/com/dam/salesianostriana/psp/sharapp/server/User.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/sharap_server/src/main/java/com/dam/salesianostriana/psp/sharapp/server/Utils.java" charset="windows-1252" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>
