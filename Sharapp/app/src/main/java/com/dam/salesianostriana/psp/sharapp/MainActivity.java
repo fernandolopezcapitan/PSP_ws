@@ -23,6 +23,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -30,7 +31,23 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static int FILE_CODE = 1;
+    private static int CODE_CONNECTION = 1;
+    private static int CODE_SEND = 2;
+    private static int CODE_DESCONNECTION = 3;
     ProgressDialog progDailog;
+    Socket s;
+    ObjectOutputStream objectOutputStream;
+    ObjectInputStream objectInputStream;
+    ByteArrayOutputStream
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // asynctask de desconexion
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // AsyncTask de Conexion
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +84,11 @@ public class MainActivity extends AppCompatActivity {
                 // internal memory.
                 i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
 
+
+                // asynctask de envio
                 startActivityForResult(i, FILE_CODE);
+
+
             }
         });
     }
@@ -109,6 +134,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private class openConection extends AsyncTask<String, Void, Void>{
+
+
+        @Override
+        protected Void doInBackground(String... params) {
+
+            try {
+                s = new Socket("172.27.60.8", 10000);
+
+
+                objectInputStream = new ObjectInputStream(s.getInputStream());
+                objectOutputStream = new ObjectOutputStream(s.getOutputStream());
+
+
+                SharappMessage message = new SharappMessage();
+
+                message.typeMessage = CODE_CONNECTION;
+                message.userName = params[0];
+
+                objectOutputStream.writeObject(message);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+            return null;
+        }
+    }
+
     private class SendFileTask extends AsyncTask<String, Void, Void> {
 
         @Override
@@ -126,8 +181,9 @@ public class MainActivity extends AppCompatActivity {
 
             if (params.length > 0) {
                 int SIZE = 64 * 1024;
-                Socket s;
+
                 try {
+                    //ip del pc clase 172.27.60.8
                     s = new Socket("172.27.60.8", 10000);
 
                     BufferedInputStream bis = new BufferedInputStream(new FileInputStream(params[0]));
@@ -176,6 +232,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             //super.onPostExecute(aVoid);
+
+
             progDailog.dismiss();
         }
     }
