@@ -1,4 +1,4 @@
-package com.dam.salesianostriana.psp.sharapp;
+package com.dam.salesianostriana.psp.sendfiles;
 
 import org.junit.Test;
 

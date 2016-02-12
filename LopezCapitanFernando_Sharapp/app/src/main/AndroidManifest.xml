@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dam.salesianostriana.psp.sharapp" >
+    package="com.dam.salesianostriana.psp.sendfiles" >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,14 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.dam.salesianostriana.psp.sendfiles.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.nononsenseapps.filepicker.FilePickerActivity"
@@ -31,7 +26,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" >
+        <activity android:name="com.dam.salesianostriana.psp.sendfiles.LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
