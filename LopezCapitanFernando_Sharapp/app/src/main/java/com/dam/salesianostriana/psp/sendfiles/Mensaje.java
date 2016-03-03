@@ -12,6 +12,7 @@ public class Mensaje {
     private String nombre;
     private Date fecha;
     private Bitmap imagen;
+    private String mensaje;
 
     public Mensaje(){}
 
@@ -24,6 +25,21 @@ public class Mensaje {
         this.nombre = nombre;
         this.fecha = fecha;
         this.imagen = imagen;
+    }
+
+    public Mensaje(String nombre, Date fecha, Bitmap imagen, String mensaje) {
+        this.nombre = nombre;
+        this.fecha = fecha;
+        this.imagen = imagen;
+        this.mensaje = mensaje;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 
     public String getNombre() {

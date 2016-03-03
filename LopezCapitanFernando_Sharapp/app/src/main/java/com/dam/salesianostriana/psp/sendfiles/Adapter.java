@@ -37,13 +37,14 @@ public class Adapter extends ArrayAdapter<Mensaje>{
         View v = LayoutInflater.from(context).inflate(R.layout.item_list, parent, false);
 
         preferences = context.getSharedPreferences("sharapp",Context.MODE_PRIVATE);
-        String nick = preferences.getString("user",null);
+        String nick = preferences.getString("user", null);
 
         Mensaje user = lista.get(position);
 
         TextView fecha = (TextView) v.findViewById(R.id.textViewFechaRecibo);
         TextView usuario = (TextView) v.findViewById(R.id.textViewUsuario);
         ImageView imageView = (ImageView) v.findViewById(R.id.imageViewRecibida);
+        TextView escribe = (TextView) v.findViewById(R.id.textViewMsgRecibo);
         RelativeLayout relativeLayout = (RelativeLayout) v.findViewById(R.id.contenedor);
 
         if(user.getNombre().equals(nick)){
@@ -58,6 +59,7 @@ public class Adapter extends ArrayAdapter<Mensaje>{
         fecha.setText(sdf.format(fecha1));
         usuario.setText(user.getNombre());
         imageView.setImageBitmap(user.getImagen());
+        escribe.setText(user.getMensaje());
 
 
         return v;

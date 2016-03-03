@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private static int CODE_DESCONNECTION = 3;
     Adapter mensajeAdapter;
     ArrayList<Mensaje> listaM;
-    String nameUser;
+    String nameUser, escritura;
     Socket s;
     ObjectOutputStream oos;
     ObjectInputStream ois;
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     ListView listaV;
+    EditText escribe;
 
 
     android.os.Handler puente = new android.os.Handler() {
@@ -68,13 +70,14 @@ public class MainActivity extends AppCompatActivity {
             String username = sharappMessage.userName;
             Date fecha = sharappMessage.date;
             Bitmap bitmap = Utils.decodeBitmapSize(sharappMessage.content, 300);
+            String mensaj = sharappMessage.message;
 
             Log.i("HANDLER_USERNAME", sharappMessage.userName);
             Log.i("HANDLER_DATE", sharappMessage.date.toString());
 
             Utils.saveImage(MainActivity.this, sharappMessage.fileName, sharappMessage.content);
 
-            Mensaje mensaje = new Mensaje(username, fecha,bitmap);
+            Mensaje mensaje = new Mensaje(username,fecha,bitmap,mensaj);
             mensajeAdapter.add(mensaje);
         }
     };
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         listaV = (ListView) findViewById(R.id.listView);
+        escribe = (EditText) findViewById(R.id.editTextEnv);
 
         preferences = getSharedPreferences("sharapp", this.MODE_PRIVATE);
         editor = preferences.edit();
@@ -95,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
         mensajeAdapter = new Adapter(this, listaM);
         listaV.setAdapter(mensajeAdapter);
 
-        nameUser = preferences.getString("user",null);
+        nameUser = preferences.getString("user", null);
+
+        //escritura = escribe.getText().toString();
 
         new OpenConnection().execute(nameUser);
 
@@ -140,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                             Uri uri = clip.getItemAt(i).getUri();
                             // Do something with the URI
                             Toast.makeText(this, "Transmitiendo el fichero " + uri.getPath(), Toast.LENGTH_SHORT).show();
-                            new SendFileTask().execute(nameUser,uri.getPath());
+                            new SendFileTask().execute(nameUser,uri.getPath(),escribe.getText().toString());
                         }
                     }
                     // For Ice Cream Sandwich
@@ -153,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
                             Uri uri = Uri.parse(path);
                             // Do something with the URI
                             Toast.makeText(this, "Transmitiendo el fichero " + uri.getPath(), Toast.LENGTH_SHORT).show();
-                            new SendFileTask().execute(nameUser,uri.getPath());
+                            new SendFileTask().execute(nameUser,uri.getPath(),escribe.getText().toString());
 
                         }
                     }
@@ -163,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri uri = data.getData();
                 // Do something with the URI
                 Toast.makeText(this, "Transmitiendo el fichero " + uri.getPath(), Toast.LENGTH_SHORT).show();
-                new SendFileTask().execute(nameUser,uri.getPath());
+                new SendFileTask().execute(nameUser,uri.getPath(),escribe.getText().toString());
             }
         }
     }
@@ -214,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
 
                 String nomRecibido = params[0];
                 String rutaImagen = params[1];
+                String mensajeEntero = params[2];
 
                 try {
                     int TAM = 64 * 1024;
@@ -233,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
                     sharappMessage.userName = nomRecibido;
                     sharappMessage.fileName = rutaImagen.split("/")[rutaImagen.split("/").length - 1];
                     sharappMessage.content = baos.toByteArray();
-                    sharappMessage.message = "";
+                    sharappMessage.message = mensajeEntero;
                     sharappMessage.date = Calendar.getInstance().getTime();
 
                     oos.writeObject(sharappMessage);
